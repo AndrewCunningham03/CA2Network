@@ -32,12 +32,15 @@ public class UserUtilities {
 
     public static final String USER_ALREADY_EXIST = "USER_ALREADY_EXIST";
 
+    public static final String USER_DOESNT_EXIST = "USER_DOESNT_EXIST";
+
     public static final String EMAIL_ALREADY_EXIST = "EMAIL_ALREADY_EXIST";
     public static final String EMAIL_SENT= "EMAIL_SENT";
     public static final String EMAIL_FAILED_TO_SEND = "EMAIL_FAILED_TO_SEND";
     public static final String CURRENTLY_NO_EMAILS = "CURRENTLY_NO_EMAILS";
     public static final String CURRENTLY_NO_SENT_EMAILS = "CURRENTLY_NO_SENT_EMAILS";
     public static final String ACK = "GOODBYE";
+    public static final String NOT_LOGGED_IN = "NOT_LOGGED_IN";
     // DELIMITERS
     public static final String DELIMITER = "%%";
 
