@@ -79,8 +79,8 @@ public class TCPEmailServer implements Runnable{
                 return handleListInbox();
             //case UserUtilities.READ:
             //    return handleRead(components);
-            //case UserUtilities.SEARCH:
-            //    return handleSearchReceived(command);
+            case UserUtilities.SEARCH:
+                return handleSearchReceived(components);
             case UserUtilities.LOGOUT:
                 return handleLogout();
 
@@ -185,6 +185,27 @@ public class TCPEmailServer implements Runnable{
     private String handleLogout() {
         loggedInUser = null;
         return UserUtilities.LOGOUT;
+    }
+    private String handleSearchReceived(String[] components){
+        String response = "";
+        if(loggedInUser == null){
+            return UserUtilities.NOT_LOGGED_IN;
+        }
+        if(components.length<2){
+            return UserUtilities.INVALID;
+        }
+        String search = components[1];
+
+        ArrayList<Email> found = emailManager.searchBySubject(loggedInUser,search);
+
+        if(found == null){
+            response = UserUtilities.NO_EMAILS_FOUND;
+        }else{
+            response = found.toString();
+        }
+
+        return response;
+
     }
 
 }

@@ -76,6 +76,9 @@ public class EmailClient {
                         response = UserUtilities.LIST_RECEIVED;
                         break;
                     case "5":
+                        System.out.println("Enter subject word you would like to search by");
+                        String word = keyboard.nextLine();
+                        response = UserUtilities.SEARCH+UserUtilities.DELIMITER+word;
                         break;
                     case "6":
                         break;

@@ -41,6 +41,7 @@ public class UserUtilities {
     public static final String CURRENTLY_NO_SENT_EMAILS = "CURRENTLY_NO_SENT_EMAILS";
     public static final String ACK = "GOODBYE";
     public static final String NOT_LOGGED_IN = "NOT_LOGGED_IN";
+    public static final String NO_EMAILS_FOUND="NO_EMAILS_FOUND";
     // DELIMITERS
     public static final String DELIMITER = "%%";
 
