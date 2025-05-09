@@ -7,4 +7,5 @@ public interface IEmailManager {
     public int getEmailIdCount();
     public boolean addInboxEmails(String username, Email email);
     public ArrayList<Email> getInboxEmails(String username);
+    public ArrayList<Email> searchBySubject(String email,String subject);
 }

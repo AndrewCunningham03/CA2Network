@@ -53,9 +53,24 @@ public class EmailManager {
         return true;
     }
 
-    public ArrayList<Email> getInboxEmails(String username){
-        ArrayList<Email> emails = inbox.get(username);
+    public ArrayList<Email> getInboxEmails(String email){
+        ArrayList<Email> emails = inbox.get(email);
         return emails;
+    }
+
+    public ArrayList<Email> searchBySubject(String email,String subject){
+        ArrayList<Email> allEmails = inbox.get(email);
+
+        ArrayList<Email>  searchEmails = new ArrayList<>();
+
+        for(int i = 0; i<allEmails.size();i++){
+            if (allEmails.get(i).getSubject().equalsIgnoreCase(subject)) {
+
+                searchEmails.add(allEmails.get(i));
+
+            }
+        }
+        return searchEmails;
     }
 
 }
