@@ -42,6 +42,9 @@ public class UserUtilities {
     public static final String ACK = "GOODBYE";
     public static final String NOT_LOGGED_IN = "NOT_LOGGED_IN";
     public static final String NO_EMAILS_FOUND="NO_EMAILS_FOUND";
+    public static final String INVALID_ID="INVALID_ID";
+    public static final String INVALID_INPUT="INVALID_INPUT";
+
     // DELIMITERS
     public static final String DELIMITER = "%%";
 

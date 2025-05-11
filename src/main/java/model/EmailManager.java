@@ -31,14 +31,14 @@ public class EmailManager {
         ArrayList<Email> email3 = new ArrayList();
         email3.add(new Email(emailIdCount+1, "user2@gmail.com","user@gmail.com", "Hip Hop", "I Love Hip Hop", LocalDateTime.of(2025, 03, 5, 5, 34)));
 
-        inbox.put("user@gmail.com", email);
+        //inbox.put("user@gmail.com", email);
         inbox.put("user1@gmail.com", email2);
         inbox.put("user2@gmail.com", email3);
 
     }
 
     public int getEmailIdCount(){
-        return emailIdCount;
+        return inbox.size();
     }
 
     public boolean addInboxEmails(String username, Email email){
@@ -71,6 +71,17 @@ public class EmailManager {
             }
         }
         return searchEmails;
+    }
+
+    public String emailMessage(String email, int id){
+        ArrayList<Email> allEmails = inbox.get(email);
+        String message = null;
+        for(int i = 0; i<allEmails.size();i++){
+            if(allEmails.get(i).getID() == id){
+                message = allEmails.get(i).getMessage();
+            }
+        }
+        return message;
     }
 
 }

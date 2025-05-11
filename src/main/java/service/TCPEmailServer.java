@@ -77,8 +77,8 @@ public class TCPEmailServer implements Runnable{
                 return handleSendEmail(components);
             case UserUtilities.LIST_RECEIVED:
                 return handleListInbox();
-            //case UserUtilities.READ:
-            //    return handleRead(components);
+            case UserUtilities.READ:
+                return handleRead(components);
             case UserUtilities.SEARCH:
                 return handleSearchReceived(components);
             case UserUtilities.LOGOUT:
@@ -93,53 +93,53 @@ public class TCPEmailServer implements Runnable{
 
     private String handleRegister(String[] components){
         String response = "";
-        if(components.length<4){
-            return UserUtilities.INVALID;
-        }
+            if (components.length < 4) {
+                return UserUtilities.INVALID_INPUT;
+            }
 
-        String email = components[1];
-        String password = components[2];
-        String confirmPassword = components[3];
+            String email = components[1];
+            String password = components[2];
+            String confirmPassword = components[3];
 
-        boolean checkIfEmailExist = userManager.checkIfEmailExist(email);
+            boolean checkIfEmailExist = userManager.checkIfEmailExist(email);
 
-        boolean checkPasswordsMatch = userManager.checkIfPasswordsAreTheSame(password, confirmPassword);
+            boolean checkPasswordsMatch = userManager.checkIfPasswordsAreTheSame(password, confirmPassword);
 
-        boolean checkPasswordFormat = userManager.checkIfPasswordsMatchRegex(password, confirmPassword);
+            boolean checkPasswordFormat = userManager.checkIfPasswordsMatchRegex(password, confirmPassword);
 
-        boolean checkEmailFormat = userManager.checkIfEmailMatchRegex(email);
+            boolean checkEmailFormat = userManager.checkIfEmailMatchRegex(email);
 
-        if (checkIfEmailExist) {
-            response = UserUtilities.USER_ALREADY_EXIST;
-        }else if (!checkPasswordsMatch) {
-            response = UserUtilities.PASSWORDS_DONT_MATCH;
-        } else if (!checkPasswordFormat) {
-            response = UserUtilities.INVALID_PASSWORD_FORMAT;
-        } else if (!checkEmailFormat) {
-            response = UserUtilities.INVALID_EMAIL_FORMAT;
-        } else {
-            userManager.registerUser(email, password);
-            response = UserUtilities.REGISTER_SUCCESSFUL;
-            loggedInUser = email;
-        }
+            if (checkIfEmailExist) {
+                response = UserUtilities.USER_ALREADY_EXIST;
+            } else if (!checkPasswordsMatch) {
+                response = UserUtilities.PASSWORDS_DONT_MATCH;
+            } else if (!checkPasswordFormat) {
+                response = UserUtilities.INVALID_PASSWORD_FORMAT;
+            } else if (!checkEmailFormat) {
+                response = UserUtilities.INVALID_EMAIL_FORMAT;
+            } else {
+                userManager.registerUser(email, password);
+                response = UserUtilities.REGISTER_SUCCESSFUL;
+                loggedInUser = email;
+            }
         return response;
     }
     private String handleLogin(String[] components){
         String response = "";
-        if(components.length<3){
-            return UserUtilities.INVALID;
-        }
-        String emailLogin = components[1];
-        String passwordLogin = components[2];
+            if (components.length < 3) {
+                return UserUtilities.INVALID_INPUT;
+            }
+            String emailLogin = components[1];
+            String passwordLogin = components[2];
 
-        boolean loginUser = userManager.loginUser(emailLogin, passwordLogin);
+            boolean loginUser = userManager.loginUser(emailLogin, passwordLogin);
 
-        if (loginUser == true) {
-            response = UserUtilities.LOGIN_SUCCESSFUL;
-            loggedInUser = emailLogin;
-        } else {
-            response = UserUtilities.LOGIN_FAILED;
-        }
+            if (loginUser == true) {
+                response = UserUtilities.LOGIN_SUCCESSFUL;
+                loggedInUser = emailLogin;
+            } else {
+                response = UserUtilities.LOGIN_FAILED;
+            }
         return response;
     }
     private String handleSendEmail(String[] components){
@@ -148,7 +148,7 @@ public class TCPEmailServer implements Runnable{
             return UserUtilities.NOT_LOGGED_IN;
         }
         if(components.length<4){
-            return UserUtilities.INVALID;
+            return UserUtilities.INVALID_INPUT;
         }
         String recipient = components[1];
         String subject = components[2];
@@ -156,7 +156,8 @@ public class TCPEmailServer implements Runnable{
         if(!userManager.checkIfEmailExist(recipient)){
             return UserUtilities.USER_DOESNT_EXIST;
         }
-        Email email1 = new Email(emailManager.getEmailIdCount()+1,loggedInUser,recipient,subject,body, LocalDateTime.now());
+        int id = emailManager.getEmailIdCount()+1;
+        Email email1 = new Email(id,loggedInUser,recipient,subject,body, LocalDateTime.now());
 
         boolean sentEmail = emailManager.addInboxEmails(recipient,email1);
 
@@ -189,10 +190,11 @@ public class TCPEmailServer implements Runnable{
     private String handleSearchReceived(String[] components){
         String response = "";
         if(loggedInUser == null){
+            log.info("Not logged in.");
             return UserUtilities.NOT_LOGGED_IN;
         }
         if(components.length<2){
-            return UserUtilities.INVALID;
+            return UserUtilities.INVALID_INPUT;
         }
         String search = components[1];
 
@@ -206,6 +208,25 @@ public class TCPEmailServer implements Runnable{
 
         return response;
 
+    }
+    private String handleRead(String[] components){
+        String response = "";
+        if(loggedInUser == null){
+            return UserUtilities.NOT_LOGGED_IN;
+        }
+        if(components.length<2){
+            return UserUtilities.INVALID_INPUT;
+        }
+        String stringID = components[1];
+
+        int id;
+
+        try {
+            id = Integer.parseInt(stringID);
+        } catch (NumberFormatException e) {
+            return UserUtilities.INVALID_ID;
+        }
+        return emailManager.emailMessage(loggedInUser,id);
     }
 
 }

@@ -3,10 +3,11 @@ package model;
 import lombok.*;
 
 
+import javax.security.auth.Subject;
 import java.time.LocalDateTime;
 @Getter
 @Setter
-@ToString
+
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 public class Email {
@@ -16,4 +17,9 @@ public class Email {
     private String subject;
     private String message;
     private LocalDateTime timeStamp;
+
+    public String toString() {
+        return "Email ID: " + ID + ", From: " + sender + ", To: " + receiver + "Subject: " + subject + ", Sent: " + timeStamp;
+    }
+
 }
